@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+
+# generated Prisma client
+generated/
+
+# build output
+dist/
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+
+#snippet
+snippet
+
