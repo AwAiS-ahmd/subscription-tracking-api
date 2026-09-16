@@ -12,11 +12,10 @@ datasource db {
   provider = "postgresql"
 }
 
-
-enum Currency{
-  USD 
-  EUR 
-  PKR 
+enum Currency {
+  USD
+  EUR
+  PKR
 }
 
 enum Frequency {
@@ -25,7 +24,7 @@ enum Frequency {
   YEARLY
 }
 
-enum Category{
+enum Category {
   SPORTS
   NEWS
   ENTERTAINMENT
@@ -35,8 +34,6 @@ enum Category{
   TECH
   OTHER
 }
-
-
 
 enum PaymentMethod {
   CARD
@@ -51,30 +48,24 @@ enum SubscriptionStatus {
   PAUSED
 }
 
-
-
-
 model User {
-  id    Int     @id @default(uuid())
-  name  String
-  email String  @unique
-  password String
-  subscriptions  Subscription[]
-
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  password      String
+  subscriptions Subscription[]
 }
 
 model Subscription {
-  id  Int  @id @default(uuid())
-  name  String   
-  price   Decimal 
-  currency  Currency  @default(PKR) 
-  frequency  Frequency
-  category  Category 
-  paymentMethod  PaymentMethod
-  status  SubscriptionStatus @default(ACTIVE)
-  startDate  DateTime
-  userId  Int
-  user User @relation(feilds:[userId],references:[id])
-
-
+  id            String             @id @default(uuid())
+  name          String
+  price         Decimal
+  currency      Currency           @default(PKR)
+  frequency     Frequency
+  category      Category
+  paymentMethod PaymentMethod
+  status        SubscriptionStatus @default(ACTIVE)
+  startDate     DateTime
+  userId        String
+  user          User               @relation(fields: [userId], references: [id])
 }
