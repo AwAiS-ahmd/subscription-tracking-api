@@ -11,18 +11,70 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+
+
+enum Currency{
+  USD 
+  EUR 
+  PKR 
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+enum Frequency {
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+enum Category{
+  SPORTS
+  NEWS
+  ENTERTAINMENT
+  LIFESTYLE
+  POLITICS
+  EDUCATION
+  TECH
+  OTHER
+}
+
+
+
+enum PaymentMethod {
+  CARD
+  PAYPAL
+  BANK_TRANSFER
+  EASYPAISA
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  PAUSED
+}
+
+
+
+
+model User {
+  id    Int     @id @default(uuid())
+  name  String
+  email String  @unique
+  password String
+  subscriptions  Subscription[]
+
+}
+
+model Subscription {
+  id  Int  @id @default(uuid())
+  name  String   
+  price   Decimal 
+  currency  Currency  @default(PKR) 
+  frequency  Frequency
+  category  Category 
+  paymentMethod  PaymentMethod
+  status  SubscriptionStatus @default(ACTIVE)
+  startDate  DateTime
+  userId  Int
+  user User @relation(feilds:[userId],references:[id])
+
+
 }
