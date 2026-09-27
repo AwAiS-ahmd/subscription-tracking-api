@@ -12,6 +12,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 enum Currency {
   USD
   EUR
@@ -53,6 +58,8 @@ model User {
   name          String
   email         String         @unique
   password      String
+  createdAt      DateTime @default(now())
+  role            Role         @default(USER)
   subscriptions Subscription[]
 }
 
