@@ -1,5 +1,5 @@
 import type { ErrorRequestHandler } from "express";
-import AppError from "../utils/AppError.js";
+import AppError from "../utils/AppError.util.js";
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;

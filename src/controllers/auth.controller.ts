@@ -23,7 +23,7 @@ const signUp = async (req: Request<{}, {}, SignUpDto>, res: Response) => {
 const signIn = async (req: Request<{}, {}, SignInDto>, res: Response) => {
   const { accessToken } = await signInService(req.body);
 
-  res
+  return res
     .cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV! === "production",
@@ -35,11 +35,10 @@ const signIn = async (req: Request<{}, {}, SignInDto>, res: Response) => {
       success: true,
       message: "Logged in sucessfully",
     });
-
 };
 
 const signOut = (req: Request, res: Response) => {
-  res
+  return res
     .clearCookie("accessToken")
     .status(200)
     .json({ success: true, message: "Logged out successfully" });

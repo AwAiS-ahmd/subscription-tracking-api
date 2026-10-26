@@ -1,9 +1,4 @@
-import express, {
-  type Express,
-  type Request,
-  type Response,
-  type NextFunction,
-} from "express";
+import express from "express";
 import { signUp, signIn, signOut } from "../controllers/auth.controller.js";
 
 const authRouter = express.Router();

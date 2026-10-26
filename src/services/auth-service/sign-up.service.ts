@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
 import type { SignUpDto } from "../../dtos/auth.dto.js";
-import AppError from "../../utils/AppError.js";
+import AppError from "../../utils/AppError.util.js";
 import jwt from "jsonwebtoken";
 
 

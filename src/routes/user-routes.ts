@@ -5,7 +5,7 @@ import {
   getUserById,
   updateUser,
 } from "../controllers/user.controller.js";
-import { authorize } from "../middlewares/auth.middleware.js";
+import { authorize } from "../middlewares/auth-middleware.js";
 const userRouter = express.Router();
 
 userRouter.use(authorize);

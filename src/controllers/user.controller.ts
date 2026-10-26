@@ -19,12 +19,11 @@ const getUserById = async (req: Request<{ id: string }>, res: Response) => {
 const updateUser = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
   const { name } = req.body;
-  const user = await updateUserService(id, {name});
+  const user = await updateUserService(id, { name });
   return res
     .status(200)
     .json({ success: true, message: "User updated successfully", data: user });
 };
-
 
 const deleteUser = async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
