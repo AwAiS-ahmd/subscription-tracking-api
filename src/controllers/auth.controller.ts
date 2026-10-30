@@ -1,15 +1,16 @@
 import { type Request, type Response } from "express";
-import type { SignUpDto, SignInDto } from "../dtos/auth.dto.js";
+import type { SignUpInput, SignInInput } from "../schemas/auth.schema.js";
 import signUpService from "../services/auth-service/sign-up.service.js";
 import signInService from "../services/auth-service/sign-in.service.js";
+import { env } from "../config/env.js";
 
-const signUp = async (req: Request<{}, {}, SignUpDto>, res: Response) => {
+const signUp = async (req: Request<{}, {}, SignUpInput>, res: Response) => {
   const { accessToken, user } = await signUpService(req.body);
 
   res
     .cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV! === "production",
+      secure: env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 30 * 60 * 1000,
     })
@@ -20,20 +21,20 @@ const signUp = async (req: Request<{}, {}, SignUpDto>, res: Response) => {
     });
 };
 
-const signIn = async (req: Request<{}, {}, SignInDto>, res: Response) => {
+const signIn = async (req: Request<{}, {}, SignInInput>, res: Response) => {
   const { accessToken } = await signInService(req.body);
 
   return res
     .cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV! === "production",
+      secure: env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 30 * 60 * 1000,
     })
     .status(200)
     .json({
       success: true,
-      message: "Logged in sucessfully",
+      message: "Logged in successfully",
     });
 };
 

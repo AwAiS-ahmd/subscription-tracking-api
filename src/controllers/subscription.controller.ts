@@ -9,13 +9,14 @@ import {
   cancelSubService,
 } from "../services/subscription-service.ts/subscriptionService.js";
 import type {
-  CreateSubscriptionDTO,
-  UpdateSubscriptionDTO,
-} from "../dtos/sub.dto.js";
+  CreateSubscriptionInput,
+  UpdateSubscriptionInput,
+} from "../schemas/subscription.schema.js";
 import { client } from "../lib/upstash-workflow.js";
+import { env } from "../config/env.js";
 
 export const createSub = async (
-  req: Request<{}, {}, CreateSubscriptionDTO>,
+  req: Request<{}, {}, CreateSubscriptionInput>,
   res: Response,
 ) => {
   const subscription = await createSubService(req.body, req.user.id);
@@ -24,7 +25,7 @@ export const createSub = async (
 
   try {
     const result = await client.trigger({
-      url: `${process.env.SERVER_URL!}/api/v1/workflows/reminders`,
+      url: `${env.SERVER_URL}/api/v1/workflows/reminders`,
       body: {
         subscriptionId: subscription.id,
       },
@@ -73,7 +74,7 @@ export const getSubById = async (
 };
 
 export const updateSub = async (
-  req: Request<{ id: string }, {}, UpdateSubscriptionDTO>,
+  req: Request<{ id: string }, {}, UpdateSubscriptionInput>,
   res: Response,
 ) => {
   const subscription = await updateSubService(

@@ -1,13 +1,14 @@
 import { prisma } from "../../lib/prisma.js";
 import type {
-  CreateSubscriptionDTO,
-  UpdateSubscriptionDTO,
-} from "../../dtos/sub.dto.js";
+  CreateSubscriptionInput,
+  UpdateSubscriptionInput,
+} from "../../schemas/subscription.schema.js";
 import { calculateNextRenewalDate } from "../../utils/date.util.js";
 import AppError from "../../utils/AppError.util.js";
 
+
 export const createSubService = async (
-  data: CreateSubscriptionDTO,
+  data: CreateSubscriptionInput,
   userId: string,
 ) => {
   const subscription = await prisma.subscription.create({
@@ -40,16 +41,21 @@ export const getSubByIdService = async (id: string, userId: string) => {
 export const updateSubService = async (
   id: string,
   userId: string,
-  data: UpdateSubscriptionDTO,
+  data: UpdateSubscriptionInput,
 ) => {
   const subscription = await prisma.subscription.findUnique({ where: { id } });
 
   if (!subscription) throw new AppError(404, "Subscription not found");
   if (subscription.userId !== userId) throw new AppError(403, "Forbidden");
 
+  // Strip undefined values so exactOptionalPropertyTypes is satisfied
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([, v]) => v !== undefined),
+  );
+
   return prisma.subscription.update({
     where: { id },
-    data,
+    data: cleanData,
   });
 };
 

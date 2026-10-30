@@ -1,10 +1,10 @@
 import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
-import type { SignInDto } from "../../dtos/auth.dto.js";
+import type { SignInInput } from "../../schemas/auth.schema.js";
 import AppError from "../../utils/AppError.util.js";
 import jwt from "jsonwebtoken";
 
-const signInService = async (userData: SignInDto) => {
+const signInService = async (userData: SignInInput) => {
   const isUser = await prisma.user.findUnique({
     where: { email: userData.email },
     select: {
@@ -24,8 +24,8 @@ const signInService = async (userData: SignInDto) => {
     throw new AppError(401, "Invalid email or password");
   }
 
-  const accessToken = jwt.sign({id:isUser.id,role:isUser.role}, process.env.JWT_SECRET!, {
-    expiresIn: process.env.EXPIRES_IN as any,
+  const accessToken = jwt.sign({ id: isUser.id, role: isUser.role }, process.env.JWT_SECRET!, {
+    expiresIn: process.env.EXPIRES_IN as unknown as number,
   });
   const { password, ...user } = isUser;
 

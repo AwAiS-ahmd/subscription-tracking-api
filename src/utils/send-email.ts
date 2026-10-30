@@ -30,7 +30,7 @@ export const sendReminderEmail = async ({
 
   const { data, error } = await resend.emails.send({
     from: "Subs Tracker <onboarding@resend.dev>",
-    to,
+    to:to,
     subject: subject,
     html: message,
   });
